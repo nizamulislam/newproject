@@ -17,6 +17,7 @@ class CreateClasswiseSubjectsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('class_id')->default(0);
             $table->text('subject_name')->nullable();
+            $table->integer('subject_id')->default(0);
             $table->timestamps();
         });
     }

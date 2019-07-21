@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 20, 2019 at 01:50 PM
+-- Generation Time: Jul 21, 2019 at 12:09 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.3
 
@@ -25,6 +25,30 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `classwise_subjects`
+--
+
+CREATE TABLE `classwise_subjects` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `class_id` int(11) NOT NULL DEFAULT '0',
+  `subject_name` text COLLATE utf8mb4_unicode_ci,
+  `subject_id` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `classwise_subjects`
+--
+
+INSERT INTO `classwise_subjects` (`id`, `class_id`, `subject_name`, `subject_id`, `created_at`, `updated_at`) VALUES
+(1, 1, NULL, '1,2,4', '2019-07-21 03:17:51', '2019-07-21 03:25:48'),
+(2, 3, NULL, '5', '2019-07-21 03:18:07', '2019-07-21 03:25:56'),
+(3, 2, NULL, '4', '2019-07-21 03:18:21', '2019-07-21 03:26:06');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `migrations`
 --
 
@@ -42,7 +66,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (1, '2014_10_12_000000_create_users_table', 1),
 (2, '2014_10_12_100000_create_password_resets_table', 1),
 (3, '2019_07_20_052909_create_subjects_table', 1),
-(4, '2019_07_20_062116_create_myclasses_table', 1);
+(4, '2019_07_20_062116_create_myclasses_table', 1),
+(5, '2019_07_20_092130_create_classwise_subjects_table', 2);
 
 -- --------------------------------------------------------
 
@@ -132,6 +157,12 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `re
 --
 
 --
+-- Indexes for table `classwise_subjects`
+--
+ALTER TABLE `classwise_subjects`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `migrations`
 --
 ALTER TABLE `migrations`
@@ -167,16 +198,22 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `classwise_subjects`
+--
+ALTER TABLE `classwise_subjects`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `myclasses`
 --
 ALTER TABLE `myclasses`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `subjects`

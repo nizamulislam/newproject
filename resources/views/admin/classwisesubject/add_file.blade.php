@@ -53,18 +53,22 @@
                             </div>
 
                             <div class="card-body">
-                                <form action="@if(!empty($editmysubject)){{route('mysubject.update',$editmysubject->id)}} @else {{route('mysubject.store')}} @endif" method="post">
+                                <form action="@if(!empty($editdata)){{route('classwisesubject.update',$editdata->id)}} @else {{route('classwisesubject.store')}} @endif" method="post">
                                     {{csrf_field()}}
-                                    @if(!empty($editmysubject))   @method('PUT') @endif
+                                    @if(!empty($editdata))   @method('PUT') @endif
 
 
                                     <div class="form-group">
                                         <label>Class Name</label>
                                        <select name="class_id" class="form-control" required>
                                            <option value="">Select Class</option>
+                                           @if(!empty($editdata))
+
                                            @foreach($myclasses as $myclass)
-                                               <option value="{{$myclass->id}}">{{$myclass->myclass_name}}</option>
+                                               <option value="{{$myclass->id}}" {{$editdata->class_id==$myclass->id?'selected':''}}>{{$myclass->myclass_name}}</option>
                                            @endforeach
+
+                                           @endif
                                        </select>
 
                                     </div>
@@ -74,14 +78,43 @@
                                         <label>Subject Name</label>
                                         <hr/>
 
-                                        @foreach($mysubjects as $subject)
+                                        @if(!empty($editdata))
+                                            <?php
+                                            //$pc=DB::table('product_categories')->where('product_id','=',1)->get();
 
-                                        <input type="checkbox" name="subject_name[]" value="" class="">{{$subject->subject_name}}
-                                        @endforeach
+                                            $x=explode(",",$editdata->subject_id);
+
+                                            ?>
+
+
+
+                                            @foreach($subjects as $subject)
+
+                                                @if(in_array($subject->id,$x))
+                                                    <input type="checkbox" checked name="subject_id[]" value="{{$subject->id}}">
+                                                    {{$subject->subject_name}}
+                                                @else
+                                                    <input type="checkbox"  name="subject_id[]" value="{{$subject->id}}"> {{$subject->subject_name}}
+                                                @endif
+
+
+                                            @endforeach
+
+
+                                            <?php echo "<br/><br/>" ?>
+
+
+
+                                        @else
+
+                                            @foreach($subjects as $subject)
+                                                <input type="checkbox" name="subject_id[]" value="{{$subject->id}}">{{$subject->subject_name}}
+                                            @endforeach
+                                        @endif
                                     </div>
                                     <div class="form-group">
                                         <label></label>
-                                        <input type="submit" name="btn" class="btn btn-info" value="@if(!empty($editmysubject)) Update @else Save @endif">
+                                        <input type="submit" name="btn" class="btn btn-info" value="@if(!empty($editdata)) Update @else Save @endif">
                                     </div>
                                 </form>
 

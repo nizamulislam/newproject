@@ -12,12 +12,14 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $myclasses=\DB::table('myclasses')->get();
+    return view('welcome',compact('myclasses'));
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/searchSubject/{id}', 'FrontController@searchSubject');
 
 Route::resource('/myclass','MyClassController');
 Route::resource('/mysubject','SubjectController');

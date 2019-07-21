@@ -7,6 +7,7 @@ use App\Myclass;
 use App\Subject;
 use App\ClasswiseSubject;
 use Session;
+use DB;
 
 class ClasswiseSubjectController extends Controller
 {
@@ -14,7 +15,12 @@ class ClasswiseSubjectController extends Controller
     public function index()
     {
         $myclasses=Myclass::all();
-        return view('admin.subject.subject_list',compact('mysubjects'));
+        $subjects=Subject::all();
+        $classwisesubjects=DB::table('classwise_subjects')
+                          ->leftJoin('myclasses','classwise_subjects.class_id','=','myclasses.id')
+                          ->select('classwise_subjects.*','myclasses.myclass_name')
+                         ->get();
+        return view('admin.classwisesubject.index',compact('myclasses','subjects','classwisesubjects'));
 
     }
 
@@ -26,8 +32,8 @@ class ClasswiseSubjectController extends Controller
     public function create()
     {
         $myclasses=Myclass::all();
-        $mysubjects=Subject::all();
-        return view('admin.classwisesubject.add_file',compact('myclasses','mysubjects'));
+        $subjects=Subject::all();
+        return view('admin.classwisesubject.add_file',compact('myclasses','subjects'));
     }
 
     /**
@@ -38,10 +44,16 @@ class ClasswiseSubjectController extends Controller
      */
     public function store(Request $request)
     {
-        $mysubject=new Subject();
-        $mysubject->subject_name=$request->subject_name;
-        $mysubject->save();
+        $x=$request->subject_id;
+        $implodeData=implode(",",$x);
+
+        $a=new ClasswiseSubject();
+        $a->class_id=$request->class_id;
+        $a->subject_id=$implodeData;
+        $a->save();
         return redirect()->route('classwisesubject.index')->with('message','Successfully Data Saved');
+
+
     }
 
     /**
@@ -63,8 +75,11 @@ class ClasswiseSubjectController extends Controller
      */
     public function edit($id)
     {
-        $editmysubject=Subject::find($id);
-        return view('admin.classwisesubject.add_file',compact('editmysubject'));
+
+        $myclasses=Myclass::all();
+        $subjects=Subject::all();
+        $editdata=ClasswiseSubject::find($id);
+        return view('admin.classwisesubject.add_file',compact('editdata','subjects','myclasses'));
     }
 
     /**
@@ -76,9 +91,13 @@ class ClasswiseSubjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $mysubject=Subject::find($id);
-        $mysubject->subject_name=$request->subject_name;
-        $mysubject->save();
+        $x=$request->subject_id;
+        $implodeData=implode(",",$x);
+
+        $a=ClasswiseSubject::find($id);
+        $a->class_id=$request->class_id;
+        $a->subject_id=$implodeData;
+        $a->save();
         return redirect()->route('classwisesubject.index')->with('message','Successfully Data Updated');
     }
 
@@ -90,8 +109,8 @@ class ClasswiseSubjectController extends Controller
      */
     public function destroy($id)
     {
-        $mysubject=Subject::find($id);
-        $mysubject->delete();
+        $a=ClasswiseSubject::find($id);
+        $a->delete();
         return back()->with('message','Successfully Data Delete');
 
     }

@@ -93,7 +93,38 @@
                     <a href="https://forge.laravel.com">Forge</a>
                     <a href="https://github.com/laravel/laravel">GitHub</a>
                 </div>
+
+
+                <div class="row text-center">
+                    <div class="col-md-12">
+                        <select name="class_id" class="form-control" onchange="searchSubject(this.value)">
+                            <option value="">Select Classs</option>
+                            @foreach($myclasses as $myclass)
+                                <option value="{{$myclass->id}}">{{$myclass->myclass_name}}</option>
+                             @endforeach
+                        </select>
+
+                        <div id="result"></div>
+                    </div>
+
+                </div>
             </div>
         </div>
+        <script
+                src="https://code.jquery.com/jquery-3.4.1.min.js"
+                integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+                crossorigin="anonymous"></script>
+    <script>
+        function searchSubject(str){
+            alert(str);
+          $.ajax({
+              url:"{{url('/searchSubject')}}/"+str,
+              success:function(data){
+                  $("#result").html(data);
+              }
+          });
+
+        }
+    </script>
     </body>
 </html>

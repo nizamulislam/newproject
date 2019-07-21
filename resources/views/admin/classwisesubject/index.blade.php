@@ -43,29 +43,49 @@
 
 
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="card">
                             <div class="card-header">
-                                Subject Generate Form
+                              Class Wise Subject
                                 @if(Session::get('message'))
                                     <h3><span class="btn btn-success">{{Session::get('message')}}</span></h3>
                                 @endif
                             </div>
 
                             <div class="card-body">
-                                <form action="@if(!empty($editmysubject)){{route('mysubject.update',$editmysubject->id)}} @else {{route('mysubject.store')}} @endif" method="post">
-                                    {{csrf_field()}}
-                                    @if(!empty($editmysubject))   @method('PUT') @endif
+                          <div class="table-responsive">
+                              <table class="table table-bordered">
+                                  <tr>
+                                      <th>#</th>
+                                      <th>Class</th>
+                                      <th>Suject</th>
+                                      <th>Action</th>
+                                  </tr>
+                                  @php($i=1)
+                                  @foreach($classwisesubjects as $classwisesubject)
+                                  <tr>
+                                      <td>{{$i++}}</td>
+                                      <td>{{$classwisesubject->myclass_name}}</td>
+                                      <td>
+                                          @foreach($subjects as $subject)
+                                              @foreach(explode(',', $classwisesubject->subject_id) as $data)
 
-                                    <div class="form-group">
-                                        <label>Subject Name</label>
-                                        <input type="text" name="subject_name" value="@if(!empty($editmysubject)){{$editmysubject->subject_name}}@endif" class="form-control">
-                                    </div>
-                                    <div class="form-group">
-                                        <label></label>
-                                        <input type="submit" name="btn" class="btn btn-info" value="@if(!empty($editmysubject)) Update @else Save @endif">
-                                    </div>
-                                </form>
+
+                                                  @if($subject->id==$data)
+                                                      {{$subject->subject_name}},
+                                                  @endif
+
+                                              @endforeach
+                                          @endforeach
+                                      </td>
+                                      <td>
+                                          <a href="{{route('classwisesubject.edit',$classwisesubject->id)}}">Edit</a>
+                                      </td>
+
+                                  </tr>
+                                      @endforeach
+                              </table>
+                          </div>
 
                             </div>
                         </div>
